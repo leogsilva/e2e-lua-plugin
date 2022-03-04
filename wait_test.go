@@ -67,25 +67,7 @@ func TestLocalHelmChartWorkflow(t *testing.T) {
 	feature := features.New("Local Helm chart workflow").
 		Setup(func(ctx context.Context, t *testing.T, config *envconf.Config) context.Context {
 			manager := helm.New(config.KubeconfigFile())
-
-			executeCommands(config.KubeconfigFile(), []string{
-				fmt.Sprintf("label namespace %s istio-injection=enabled --overwrite", ingressNamespace),
-				"label namespace default istio-injection=enabled --overwrite",
-				"label node --all=true ingress-ready=true",
-			}, t)
-			err := manager.RunRepo(helm.WithArgs("add", "nginx-stable", "https://helm.nginx.com/stable"))
-			if err != nil {
-				t.Fatal("failed to add nginx helm chart repo")
-			}
-			err = manager.RunRepo(helm.WithArgs("update"))
-			if err != nil {
-				t.Fatal("failed to upgrade helm repo")
-			}
-			err = manager.RunInstall(helm.WithName("nginx"), helm.WithNamespace(ingressNamespace), helm.WithReleaseName("nginx-stable/nginx-ingress"))
-			if err != nil {
-				t.Fatal("failed to install nginx Helm chart")
-			}
-			err = manager.RunInstall(helm.WithName("istio-base"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(istioHome, "manifests", "charts", "base")), helm.WithWait(), helm.WithTimeout("10m"))
+			err := manager.RunInstall(helm.WithName("istio-base"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(istioHome, "manifests", "charts", "base")), helm.WithWait(), helm.WithTimeout("10m"))
 			if err != nil {
 				t.Fatal("failed to invoke helm install operation istio-base due to an error", err)
 			}
@@ -96,6 +78,23 @@ func TestLocalHelmChartWorkflow(t *testing.T) {
 			err = manager.RunInstall(helm.WithName("istio-ingress"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(istioHome, "manifests", "charts", "gateways", "istio-ingress")), helm.WithWait(), helm.WithTimeout("10m"))
 			if err != nil {
 				t.Fatal("failed to invoke helm install operation istio-ingress due to an error", err)
+			}
+			executeCommands(config.KubeconfigFile(), []string{
+				fmt.Sprintf("label namespace %s istio-injection=enabled --overwrite", ingressNamespace),
+				"label namespace default istio-injection=enabled --overwrite",
+				"label node --all=true ingress-ready=true",
+			}, t)
+			err = manager.RunRepo(helm.WithArgs("add", "nginx-stable", "https://helm.nginx.com/stable"))
+			if err != nil {
+				t.Fatal("failed to add nginx helm chart repo")
+			}
+			err = manager.RunRepo(helm.WithArgs("update"))
+			if err != nil {
+				t.Fatal("failed to upgrade helm repo")
+			}
+			err = manager.RunInstall(helm.WithName("nginx"), helm.WithNamespace(ingressNamespace), helm.WithReleaseName("nginx-stable/nginx-ingress"))
+			if err != nil {
+				t.Fatal("failed to install nginx Helm chart")
 			}
 
 			log.Printf("Using kubeconfig file %s\n", config.KubeconfigFile())
