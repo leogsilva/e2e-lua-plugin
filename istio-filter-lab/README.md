@@ -1,0 +1,7 @@
+# istio-filter-lab
+Simple istio filter implemented in lua
+
+
+# Token
+
+eyJhbGciOiJIUzI1NiJ9.eyJJc3N1ZXIiOiJJc3N1ZXIiLCJ1c3IiOiJKYXZhSW5Vc2UiLCJleHAiOjE2NDU3OTY3ODIsImJyYW5jaCI6ImIxIiwiaWF0IjoxNjQ1Nzk2NzgyfQ.ysu_6Ij6V1LXI8b9iPzj3pvalmro8fWuxSdC3t8YV48

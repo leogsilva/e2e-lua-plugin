@@ -28,15 +28,18 @@ var (
 	ingressNamespace string
 	kindClusterName  string
 	istioNamespace   string
+	istioHome        string
 )
 
 func TestMain(m *testing.M) {
+
 	cfg, _ := envconf.NewFromFlags()
 	testEnv = env.NewWithConfig(cfg)
 	kindClusterName = envconf.RandomName("third-party", 16)
 	namespace = envconf.RandomName("third-party", 16)
 	istioNamespace = "istio-system"
 	ingressNamespace = "ingress-nginx"
+	istioHome = os.Getenv("ISTIO_HOME")
 
 	testEnv.Setup(
 		envfuncs.CreateKindCluster(kindClusterName),

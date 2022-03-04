@@ -85,15 +85,15 @@ func TestLocalHelmChartWorkflow(t *testing.T) {
 			if err != nil {
 				t.Fatal("failed to install nginx Helm chart")
 			}
-			err = manager.RunInstall(helm.WithName("istio-base"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(curDir, "istio-1.13.1", "manifests", "charts", "base")), helm.WithWait(), helm.WithTimeout("10m"))
+			err = manager.RunInstall(helm.WithName("istio-base"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(istioHome, "manifests", "charts", "base")), helm.WithWait(), helm.WithTimeout("10m"))
 			if err != nil {
 				t.Fatal("failed to invoke helm install operation istio-base due to an error", err)
 			}
-			err = manager.RunInstall(helm.WithName("istiod"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(curDir, "istio-1.13.1", "manifests", "charts", "istio-control", "istio-discovery")), helm.WithWait(), helm.WithTimeout("10m"))
+			err = manager.RunInstall(helm.WithName("istiod"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(istioHome, "manifests", "charts", "istio-control", "istio-discovery")), helm.WithWait(), helm.WithTimeout("10m"))
 			if err != nil {
 				t.Fatal("failed to invoke helm install operation istiod due to an error", err)
 			}
-			err = manager.RunInstall(helm.WithName("istio-ingress"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(curDir, "istio-1.13.1", "manifests", "charts", "gateways", "istio-ingress")), helm.WithWait(), helm.WithTimeout("10m"))
+			err = manager.RunInstall(helm.WithName("istio-ingress"), helm.WithNamespace(istioNamespace), helm.WithChart(filepath.Join(istioHome, "manifests", "charts", "gateways", "istio-ingress")), helm.WithWait(), helm.WithTimeout("10m"))
 			if err != nil {
 				t.Fatal("failed to invoke helm install operation istio-ingress due to an error", err)
 			}

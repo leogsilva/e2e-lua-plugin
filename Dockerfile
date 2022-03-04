@@ -11,7 +11,9 @@ RUN curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION TARGET
     chmod +x /usr/local/bin/kubectl && \
     curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64 && \
     mv kind /usr/local/bin && \
-    chmod +x /usr/local/bin/kind
+    chmod +x /usr/local/bin/kind && \
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
+    chmod 700 get_helm.sh && ./get_helm.sh
 
 
 # set up nsswitch.conf for Go's "netgo" implementation
@@ -22,6 +24,7 @@ RUN curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION TARGET
 ENV PATH /usr/local/go/bin:$PATH
 
 ENV GOPATH /go
+ENV ISTIO_HOME /istio-$ISTIO_VERSION
 ENV PATH $GOPATH/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH" && mkdir -p "$GOPATH/e2e"
 WORKDIR $GOPATH/e2e
