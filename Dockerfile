@@ -34,6 +34,6 @@ COPY go.sum ./
 COPY *.go ./
 COPY entrypoint.sh ./
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x entrypoint.sh && go mod tidy
 
 ENTRYPOINT ["./entrypoint.sh"]
