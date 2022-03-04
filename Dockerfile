@@ -29,7 +29,7 @@ WORKDIR $GOPATH/e2e
 COPY go.mod ./
 COPY go.sum ./
 COPY *.go ./
-COPY entrypoin.sh ./
+COPY entrypoint.sh ./
 
 RUN chmod +x entrypoint.sh
 
