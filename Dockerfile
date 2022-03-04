@@ -23,9 +23,14 @@ ENV PATH /usr/local/go/bin:$PATH
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:$PATH
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
-WORKDIR $GOPATH
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH" && mkdir -p "$GOPATH/e2e"
+WORKDIR $GOPATH/e2e
 
 COPY go.mod ./
 COPY go.sum ./
 COPY *.go ./
+COPY entrypoin.sh ./
+
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
